@@ -1,0 +1,129 @@
+mago
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Παράδειγμα</title>
+    <style type="text/css">
+      #Freq{
+      width: 1000px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Παράδειγμα 1</h3>
+    <canvas id="myCanvas1"></canvas>
+    <h3>Παράδειγμα 2</h3>
+    <canvas id="myCanvas2"></canvas>
+    <h3>Παράδειγμα 3</h3>
+    <canvas id="myCanvas3"></canvas>
+    <h3>Παράδειγμα 4</h3>
+    <canvas id="myCanvas4"></canvas>
+    <h3>Παράδειγμα 5</h3>
+    <p>Ένταση</p><input id="Vol" type="range" min="0" max="1" step="0.01" value="0.1">
+    <p>Η συχνότητα απεικονίζεται στο δεξί κλικ>inspect>console</p>
+    <p>Συχνότητα</p><input id="Freq" type="range" min="1" max="22050" step="1" value="440">
+
+  </body>
+  <script>
+
+    //Παράδειγμα 1
+
+    /* Το στοιχείο <canvas> δεν έχει την δυνατότητα να γράψει στην οθόνη απο
+      μονο του. Γιανα γραφτούνε γραφικά στην οθόνη πρέπει να χρησιμοποιήθει
+      Javascript.
+
+      Η μέθοδο getContext() επιστρέφει ένα αντικείμενο, το οποιο διαθέτει
+      μεθόδους και ιδιότητες που επιτρέπουν να γραφτούνε γραφτούνε γραφικά.*/
+
+    a = document.getElementById("myCanvas1");
+    atx = a.getContext("2d");
+
+    /*διαστάσεις καμβά*/
+    atx.canvas.width = 200;
+    atx.canvas.height = 100;
+
+    /*χρώμα καμβά (θα μπορούσε επίσης να επιτευχθεί μέσω CSS)*/
+    atx.canvas.style.backgroundColor = "#44bec7";
+
+
+
+    //Παράδειγμα 2
+
+    b = document.getElementById("myCanvas2");
+    btx = b.getContext("2d");
+    btx.canvas.width = 200;
+    btx.canvas.height = 100;
+    btx.canvas.style.backgroundColor = "#44bec7";
+
+    /*το παρακάτω κομμάτι κώδικα γράφει μια ευθεία στο καμβά*/
+    btx.moveTo(25, 25);
+    btx.lineTo(175, 75);
+    btx.stroke();
+
+
+
+    //Παράδειγμα 3
+
+    c = document.getElementById("myCanvas3");
+    ctx = c.getContext("2d");
+    ctx.canvas.width = 200;
+    ctx.canvas.height = 100;
+    ctx.canvas.style.backgroundColor = "#44bec7";
+
+    /*το παρακάτω κομμάτι κώδικα γράφει ενα κομμάτι κύκλου και ενα κύκλο
+    στο καμβά*/
+    ctx.beginPath();
+    ctx.arc(50, 50, 30, 0*Math.PI, 2*Math.PI);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(150, 50, 30, 1.8*Math.PI, 1.2*Math.PI);
+    ctx.stroke();
+
+
+
+    //Παράδειγμα 4
+
+    d = document.getElementById("myCanvas4");
+    dtx = d.getContext("2d");
+    dtx.canvas.width = 200;
+    dtx.canvas.height = 100;
+    dtx.canvas.style.backgroundColor = "#44bec7";
+
+    /*το παρακάτω κομμάτι κώδικα γράφει μια καμπύλη Bezier στο καμβά*/
+    dtx.beginPath();
+    dtx.moveTo(25, 25);
+    dtx.bezierCurveTo(35, 100, 123, 0, 164, 70);
+    dtx.stroke();
+
+
+
+    //Παράδειγμα 5
+      /*Η μέθοδος AudioContext() είναι παρόμοια με την μέθοδο getContext() αλλα
+      για την παραγωγή ήχου*/
+    etx = new window.AudioContext();
+    osc = etx.createOscillator();
+    vol = etx.createGain();
+    freqControl = document.getElementById("Freq");
+    playControl = document.getElementById("Play");
+    volControl = document.getElementById("Vol");
+
+      /* το παρακάτω κομμάτι κώδικα ελέγχει την συχνότητα του oscillator*/
+    console.log("Συχνότητα:", freqControl.value);
+    osc.frequency.value = freqControl.value;
+    freqControl.addEventListener("input", function() {
+      osc.frequency.value = freqControl.value;
+      console.log("freq:", freqControl.value);
+    });
+    osc.connect(vol);
+    osc.start(0);
+
+      /* το παρακάτω κομμάτι κώδικα ελέγχει την ένταση*/
+    vol.gain.value = volControl.value;
+    vol.connect(etx.destination);
+    volControl.addEventListener("input", function(){
+      vol.gain.value = volControl.value;
+      console.log("vol:", volControl.value);
+    });
+
+  </script>
+</html>
